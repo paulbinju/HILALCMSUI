@@ -1,0 +1,39 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+    <mat-dialog-content>
+        <div class="modalHeader">
+            <div class="editRowModal">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 font-17">
+                            <h3>Newsletter</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button mat-icon-button ria-label="Close dialog" mat-button mat-dialog-close>
+                <mat-icon mat-button mat-dialog-close>close</mat-icon>
+            </button>
+        </div>
+        <hr>
+        <br>
+        <div style="overflow:hidden">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Publication</mat-label>
+                <mat-select formControlName="publicationID" required>
+                    <mat-option *ngFor="let r of lookup" [value]="r.lookupID">
+                        {{r.title}}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>flag</mat-icon>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Date</mat-label>
+                <input matInput type="date" formControlName="newsletterName">
+                <mat-icon matSuffix>calendar</mat-icon>
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button class="btn btn-danger" type="submit" [disabled]="myForm.invalid">Create Newsletter</button>
+    </mat-dialog-actions>
+</form>

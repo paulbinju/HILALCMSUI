@@ -1,0 +1,18 @@
+ 
+.buttonrow {
+    display: table-cell;
+    width: 490px;
+  }
+  
+  .buttonrow .mat-button-base {
+    margin: 8px 8px 8px 0;
+  }
+
+  :host ::ng-deep .ck-editor__editable_inline {
+    min-height: 400px;
+  }
+
+  .green{
+    background-color: green!important;
+    color: white;
+  }

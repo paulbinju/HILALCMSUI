@@ -1,0 +1,73 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="materialTableHeader">
+      <div class="row">
+        <div class="col-12" style="padding-top:10px">
+          <h3><b>{{publication}} - {{newsletterName | date}}</b></h3>
+        </div>
+      </div>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+
+          <div class="body">
+
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <h2>Top Story</h2>
+                <div class="col-md-12">
+                  <div class="cards" id="left">
+                    <!-- <div class="container" dragula="VAMPIRES" style="min-height: 50px;min-width:200px;background-color: #f0f0f0;">
+                    </div> -->
+
+                    <div class='container' [dragula]="MANY_ITEMS" [(dragulaModel)]='topnews'
+                      style="padding: 15px 15px;min-width:200px;background-color: #f0f0f0;">
+                      <div *ngFor='let text of topnews' [innerHtml]='text.title'></div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <h2>Latest News</h2>
+                <div class="col-md-12">
+                  <div class="cards" id="left">
+                    <div class="container" dragula="VAMPIRES" [dragula]="MANY_ITEMS" [(dragulaModel)]='latestnews'
+                      style="padding: 15px 15px;min-width:200px;background-color: #f0f0f0;">
+                      <div *ngFor='let text of latestnews' [innerHtml]='text.title'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="col-md-12">
+                  <div class="cards" id="right">
+                    <div dragula="VAMPIRES" [dragula]="MANY_ITEMS" [(dragulaModel)]='sourcelist'>
+                      <!-- <ng-container *ngFor="let article of iArticles; let i=index;">
+                        <div class="drop-card">
+                          <span class="cardtitle noselect">{{ article.title }}</span>
+                        </div>
+                      </ng-container> -->
+                      <div *ngFor='let text of sourcelist' [innerHtml]='text.title'></div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="col-md-12">
+                  <div class="cards" id="right">
+                    <button mat-raised-button color="accent" type="button"   type="button"  (click)="getArticles()">GENERATE NEWSLETTER</button>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

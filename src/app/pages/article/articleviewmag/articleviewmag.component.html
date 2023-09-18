@@ -1,0 +1,81 @@
+<section class="content">
+    <div class="container-fluid">
+   
+  
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="body">
+              <div class="responsive_table">
+                <div class="materialTableHeader">
+                  <div class="row">
+                    <div class="col-4"  style="padding-top:10px"><h3><b>Articles</b></h3></div>
+                    <div class="col-8"  style="padding-top:6px">
+                        <button mat-raised-button color="accent" type="button" class="right" type="button"  (click)="redirecttoadd()">
+                          <mat-icon matSuffix>add</mat-icon> Add New Article
+                        </button>
+                    </div>
+                    
+                  </div>
+                </div>
+     
+<div class="row">
+    <div class="col-md-12">
+
+            <table mat-table [dataSource]="articles"  class="mat-elevation-z8 table">
+
+ 
+              
+                <ng-container matColumnDef="articleID">
+                    <th mat-header-cell *matHeaderCellDef> Article ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.articleID}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> Title </th>
+                    <td (click)="edit(element.articleID)" mat-cell *matCellDef="let element"> {{element.title}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="categoryName">
+                    <th mat-header-cell *matHeaderCellDef> Category </th>
+                    <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="createdDate">
+                    <th mat-header-cell *matHeaderCellDef> Created Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.createdDate | date }} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <mat-icon class="green" (click)="edit(element.articleID)">edit</mat-icon>
+                      &nbsp;&nbsp;
+                      <mat-icon class="red" (click)="deleteart(element.articleID)">delete_outline</mat-icon>
+                      &nbsp;&nbsp;
+                      <mat-icon class="blue" (click)="preview(element.articleID)">zoom_in</mat-icon>
+                     </td>
+                  </ng-container>
+        
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              
+              
+        
+ 
+
+
+
+        
+    </div>
+</div>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

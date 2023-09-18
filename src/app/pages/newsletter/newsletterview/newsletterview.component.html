@@ -1,0 +1,75 @@
+<section class="content">
+    <div class="container-fluid">
+   
+  
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="body">
+              <div class="responsive_table">
+                <div class="materialTableHeader">
+                  <div class="row">
+                    <div class="col-4"  style="padding-top:10px"><h3><b>Newsletters</b></h3></div>
+                    <div class="col-4"  style="padding-top:10px;background-color: white;">      
+                      <mat-select  placeholder="Publication" (selectionChange) ="loaddata($event.value)" >
+                      <mat-option *ngFor="let r of lookup" [value]="r.lookupID">
+                        {{r.title}}
+                      </mat-option>
+                      
+                    </mat-select></div>
+                    <div class="col-4"  style="padding-top:6px">
+                        <button mat-mini-fab color="primary" class="float-end" (click)="addnew()"><mat-icon>add</mat-icon></button>
+                    </div>
+                    
+                  </div>
+                </div>
+     
+<div class="row">
+    <div class="col-md-12">
+
+            <table mat-table [dataSource]="iNewsletters"  class="mat-elevation-z8">
+                  <ng-container matColumnDef="publication">
+                    <th mat-header-cell *matHeaderCellDef> Publication </th>
+                    <td mat-cell *matCellDef="let element"> {{element.publication}}</td>
+                  </ng-container>
+                   
+                  <ng-container matColumnDef="newsletterName">
+                    <th mat-header-cell *matHeaderCellDef>  Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.newsletterName | date }} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <mat-icon class="red" matTooltip="Delete Newsletter" (click)="delete(element.newsletterID)">delete_outline</mat-icon>
+                      &nbsp;&nbsp;
+                      <mat-icon  *ngIf="!element.generated"   class="green" matTooltip="Generate Newsletter" (click)="selectIssue(element.newsletterID)">launch</mat-icon> 
+                      <mat-icon *ngIf="element.generated"  class="green" matTooltip="Download Newsletter" (click)="downloadNl(element.newsletterID, element.publicationID)">download</mat-icon> 
+                     </td>
+                  </ng-container>
+        
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              
+              
+        
+ 
+
+
+
+        
+    </div>
+</div>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

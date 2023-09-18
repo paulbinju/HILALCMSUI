@@ -1,0 +1,292 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="body">
+              <div class="responsive_table">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="modalHeader">
+                      <div class="editRowModal">
+                        <div class="modalHeader clearfix">
+                          <div class="modal-about">
+                            <div class="font-weight-bold p-t-5 font-15">
+                              <h4>Add / Edit Article</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <br>
+                    <div style="overflow:hidden">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <mat-form-field class="example-full-width required" appearance="outline">
+                            <mat-label>Publication</mat-label>
+                            <mat-select formControlName="publicationID" required (selectionChange)="onChangePublication($event.value)">
+                              <mat-option *ngFor="let r of lookup" [value]="r.lookupID">{{r.title}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-md-4" *ngIf="showIssue">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Issue</mat-label>
+                            <mat-select formControlName="issueID" required>
+                              <mat-option *ngFor="let r of iissues" [value]="r.issueID">
+                                {{r.issueName}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+
+                        <div class="col-md-3">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Category</mat-label>
+                            <mat-select formControlName="categoryID" required
+                              (selectionChange)="onChangeCategory($event.value)">
+                              <mat-option *ngFor="let r of icategoriesFiltered" [value]="r.categoryID">
+                                {{r.categoryName}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                        </div>
+
+                        <div class="col-md-2" *ngIf="showArticleType">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Article Type</mat-label>
+                            <mat-select formControlName="articleTypeID" required
+                              (selectionChange)="onChangeArticleType($event.value)">
+                              <mat-option *ngFor="let r of articletypesFiltered" [value]="r.lookupID">
+                                {{r.title}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                          <mat-form-field class="example-full-width" appearance="outline" *ngIf="showSubcategory">
+                            <mat-label>Sub Category</mat-label>
+                            <mat-select formControlName="subCategoryID" required>
+                              <mat-option *ngFor="let r of iSubcategoriesFiltered" [value]="r.subCategoryID">
+                                {{r.subCategoryName}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Article Title</mat-label>
+                        <input matInput formControlName="title">
+                      </mat-form-field>
+
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Byline (Google Description)</mat-label>
+                        <textarea matInput placeholder="standfirst" formControlName="byline" cdkTextareaAutosize
+                          cdkAutosizeMinRows="2"></textarea>
+
+                      </mat-form-field>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Country (Geo Targeting)</mat-label>
+                            <mat-select formControlName="countryID" required>
+                              <mat-option *ngFor="let r of countries" [value]="r.lookupID">
+                                {{r.title}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix>language</mat-icon>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Dateline</mat-label>
+                            <input matInput type="text" formControlName="dateline">
+                            <mat-icon matSuffix>location_city</mat-icon>
+                          </mat-form-field>
+                        </div>
+
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-md-6">
+
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Slug</mat-label>
+                            <input matInput type="text" formControlName="slug">
+                            <mat-icon matSuffix>building</mat-icon>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Tags (Google Keywords)</mat-label>
+                            <input matInput type="text" formControlName="tags">
+                            <mat-icon matSuffix>widgets</mat-icon>
+                          </mat-form-field>
+
+                        </div>
+                      </div>
+                      <mat-label>Article</mat-label>
+                      <ckeditor [editor]="Editor" formControlName="articleBody" data="<p>Hello, world!</p>"></ckeditor>
+
+                      <br><br>
+                      <mat-label>Attach Featured Image</mat-label>
+
+                      <div class="col-md-3">
+                        <input type="file" (change)="onFileSelect($event)" name="featuredImage">
+                      </div>
+                     
+                      <div class=" col-md-5" *ngIf="imageURL !== '' || imageURL !=null ">
+                        <img [src]="imageURL">
+                      </div>
+
+
+
+
+
+
+
+                      <div class="col-md-5" *ngIf="imageURL && imageURL !== ''">
+
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Image Caption</mat-label>
+                          <input matInput type="text" formControlName="featuredImageCaption">
+                          <mat-icon matSuffix>image</mat-icon>
+                        </mat-form-field>
+
+                      </div>
+
+                      <br>
+                      <br>
+                      <div *ngFor="let iArticleExtension of iArticleExtensions" class="col-md-12">
+
+                        <div style="border-top:3px solid #f0f0f0;height:30px;width:60%;margin:10px 0 5px 0">
+                          <button type="button" (click)="delArtExt(iArticleExtension.articleExtensionID)"
+                            style="margin-top:-8px" _ngcontent-xlk-c142="" mat-icon-button="" color="warn"
+                            class="pull-right mat-focus-indicator mat-icon-button mat-button-base mat-warn"><span
+                              class="mat-button-wrapper">
+                              <mat-icon _ngcontent-xlk-c142="" role="img"
+                                class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color"
+                                aria-hidden="true" data-mat-icon-type="font">close</mat-icon>
+                            </span><span matripple=""
+                              class="mat-ripple mat-button-ripple mat-button-ripple-round"></span><span
+                              class="mat-button-focus-overlay"></span></button>
+                          <!-- <button type="button" (click)="editArtExt(iArticleExtension.articleExtensionID)"
+                            style="margin-top:-8px" _ngcontent-xlk-c142="" mat-icon-button="" color="warn"
+                            class="pull-right mat-focus-indicator mat-icon-button mat-button-base mat-warn"><span
+                              class="mat-button-wrapper">
+                              <mat-icon _ngcontent-xlk-c142="" role="img"
+                                class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color"
+                                aria-hidden="true" data-mat-icon-type="font">edit</mat-icon>
+                            </span><span matripple=""
+                              class="mat-ripple mat-button-ripple mat-button-ripple-round"></span><span
+                              class="mat-button-focus-overlay"></span></button> -->
+                        </div>
+
+
+
+                        <div *ngIf="iArticleExtension.articleExtensionTypeID==16">
+                          <iframe width="200" height="180" [src]="sanitizer(iArticleExtension.mediaURL)"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                        </div>
+
+
+                        <div *ngIf="iArticleExtension.articleExtensionTypeID==15" class="col-md-10">
+                          <img [src]="imagePath(iArticleExtension.mediaURL)" style="width: 200px;">
+                        </div>
+
+                        <div *ngIf="iArticleExtension.articleExtensionTypeID==14" class="col-md-7"
+                          style="height: 200px;overflow:scroll">
+                          <div [innerHTML]="iArticleExtension.textContent"></div>
+                        </div>
+                      </div>
+
+
+                      <br>
+
+                      <button *ngIf="editArticleID==0" mat-raised-button color="accent" type="submit">
+                        <mat-icon matSuffix>save</mat-icon> SAVE
+                      </button>
+                      <div class="buttonrow" *ngIf="editArticleID!=0">
+
+                        <button type="button" mat-fab color="accent" (click)="ArticleExtension(16)">
+                          <mat-icon>ondemand_video</mat-icon>
+                        </button>
+                        <button type="button" mat-fab color="warn" (click)="ArticleExtension(15)">
+                          <mat-icon>image</mat-icon>
+                        </button>
+                        <button type="button" mat-fab color="warn" (click)="ArticleExtension(14)">
+                          <mat-icon>text_format</mat-icon>
+                        </button>
+
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="content" *ngIf="editArticleID!=0" style="margin-top: -5px;">
+    <div class="container-fluid">
+
+
+      <div class="card">
+        <div class="body">
+          <br>
+          <div class="row" *ngIf="showIssue==false">
+            <div class="col-md-4">
+              Show in Tradearabia Website
+              &nbsp;<mat-slide-toggle color="primary"  formControlName="publishToTA"></mat-slide-toggle>
+            </div>
+            <div class="col-md-4">
+              Show in Magazine Website
+              &nbsp;<mat-slide-toggle color="primary"   formControlName="publishToMAG"></mat-slide-toggle>
+            </div>
+          </div>
+
+
+          <br>
+
+          <div class="buttonrow">
+            <button mat-raised-button color="accent" type="submit">
+              <mat-icon matSuffix>save</mat-icon> SAVE
+            </button>
+            <button mat-raised-button color="primary" type="button" (click)="preview()">
+              <mat-icon matSuffix>tv</mat-icon> PREVIEW
+            </button>
+            <button mat-raised-button color="warn" type="button" (click)="cancel()">
+              <mat-icon matSuffix>cancel</mat-icon> CANCEL
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </section>
+</form>

@@ -1,0 +1,26 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="body">
+              <div class="responsive_table">
+                <h1>Angular 13 FormData (multipart/data-form) Example</h1>
+                <div>
+                    <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">      
+                      <div>
+                        <input type="file" name="profile" (change)="onFileSelect($event)" />
+                      </div>
+                      <div>
+                        <button type="submit">Upload</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+  </section>

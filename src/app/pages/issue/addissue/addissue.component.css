@@ -1,0 +1,13 @@
+table {
+    width: 100%;
+}
+
+.green {
+    color: green;
+    cursor: pointer;
+}
+
+.red {
+    color: red;
+    cursor: pointer;
+}
