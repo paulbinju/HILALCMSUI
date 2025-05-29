@@ -49,6 +49,7 @@ export class AddIssueComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     this.issueservice.postIssues(form.value).subscribe();
+    localStorage.setItem('publicationID',form.value.publicationID);
     this.matdialogRef.close({ pubid: form.value.publicationID });
   }
 }

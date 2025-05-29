@@ -50,20 +50,19 @@ export class ArticleextensionComponent implements OnInit {
   onSubmit() {
 
     const formData = new FormData();
-    
-    if(this.data.extensionType == '16'){
+    if(this.data.extensionType == '17'){
     formData.append('mediaURL', this.myForm.get('mediaURL').value);
     formData.append('textContent', `-`);
 
     }
 
-    if(this.data.extensionType == '15'){
+    if(this.data.extensionType == '16'){
       formData.append('mediaURL', `-`);
       formData.append('imageURL', this.myForm.get('imageURL').value);
-      formData.append('textContent', this.myForm.get('textContent').value);
+      formData.append('textContent', '');
     }
 
-    if(this.data.extensionType == '14'){
+    if(this.data.extensionType == '15'){
       formData.append('mediaURL', `-`);
       formData.append('imageURL', ``);
       formData.append('textContent', this.myForm.get('textContent').value);

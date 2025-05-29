@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7075/api',
-  imageURL: `http://localhost:81/`,
+    apiUrl: 'https://localhost:7075/api',
+  //apiUrl: 'https://hilalcmsapi.azurewebsites.net/api',
+ // imageURL: `https://hilalimages.blob.core.windows.net/hilalcmsimages/`,
+   imageURL: `http://localhost:81/`,
 };
 
 /*

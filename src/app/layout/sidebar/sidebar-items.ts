@@ -167,6 +167,15 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         groupTitle: false,
         submenu: []
+      },
+      {
+        path: 'pages/faq',
+        title: '1.1.3',
+        moduleName: 'version',
+        icon: 'check-circle',
+        class: '',
+        groupTitle: false,
+        submenu: []
       }
     ]
   }

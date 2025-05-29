@@ -93,7 +93,7 @@ export class ViewIssueComponent implements OnInit {
   }
 
   selectIssue(iissues) {
-    localStorage.setItem("publicationID", iissues.publicationID);
+    localStorage.setItem("PublicationID", iissues.publicationID);
     localStorage.setItem("issueID", iissues.issueID);
     this.router.navigate([`./pages/articleviewmag`]);
 

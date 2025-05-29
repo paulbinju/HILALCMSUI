@@ -43,6 +43,7 @@ export class ArticleviewComponent implements OnInit {
   }
 
   redirecttoadd() {
+    localStorage.setItem("PublicationID", "1");
     this.router.navigate([`/pages/articleaddedit/0`]);
   }
 

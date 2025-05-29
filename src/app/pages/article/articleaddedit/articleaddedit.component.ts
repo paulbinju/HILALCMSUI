@@ -21,6 +21,8 @@ import { environment } from 'src/environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ArticleextensiondeleteComponent } from '../articleextensiondelete/articleextensiondelete.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { number } from 'echarts';
+import { formatDate, Location } from '@angular/common';
 @Component({
   selector: 'app-articleaddedit',
   templateUrl: './articleaddedit.component.html',
@@ -42,6 +44,7 @@ export class ArticleaddeditComponent implements OnInit {
   iissues: IIssues[];
   iissuesFiltered: IIssues[];
   curUser: string;
+  today: Date = new Date();
   public iArticles: IArticles;
   public iArticleExtensions: IArticleExtensions;
   public imageURL: string;
@@ -53,11 +56,11 @@ export class ArticleaddeditComponent implements OnInit {
   constructor(private fb: FormBuilder, private _lookupservice: LookupService, private categoryservice: CategoryService,
     private subcategoryservice: SubCategoryService, private issueservice: IssueService, private articleService: ArticleService,
     private router: Router, private httpClient: HttpClient, private dialog: MatDialog, private activatedRoute: ActivatedRoute,
-    public domSanitizer: DomSanitizer, public spinnerservice: NgxSpinnerService, public snackBar: MatSnackBar
+    public domSanitizer: DomSanitizer, public spinnerservice: NgxSpinnerService, public snackBar: MatSnackBar, public location: Location
   ) { }
   ngOnInit(): void {
     this.editArticleID = Number(this.activatedRoute.snapshot.paramMap.get('articleID'));
-   
+
     this.myForm = this.fb.group({
       dateline: [``],
       byline: [``],
@@ -68,7 +71,7 @@ export class ArticleaddeditComponent implements OnInit {
       featuredImageURL: [``],
       featuredImageCaption: [``],
       tags: [``],
-      createdDate: [``],
+      createdDate: [formatDate(this.today, 'dd/MM/YYYY', 'en-GB')],
       countryID: [0],
       country: [``],
       articleTypeID: [0],
@@ -79,12 +82,12 @@ export class ArticleaddeditComponent implements OnInit {
       author: [JSON.parse(localStorage.getItem('currentUser'))[0].name],
       categoryID: [null, Validators.required],
       categoryName: [``],
-      subCategoryID: [0],
+      subCategoryID: [null],
       subCategoryName: [``],
       issueID: [0],
       issue: [``],
-      publishToTA: [true],
-      publishToMAG: [true],
+      showinTA: [true],
+      showinMAG: [true],
       refNo: [0]
     });
     this.loadData();
@@ -96,6 +99,7 @@ export class ArticleaddeditComponent implements OnInit {
         this.lookup = result;
         this.articletypes = data.filter(ltype => ltype.groupName == 'ArticleTypes')
         this.countries = data.filter(ltype => ltype.groupName == 'Countries')
+
       },
       error: error => {
         console.error('There was an error!', error);
@@ -124,11 +128,12 @@ export class ArticleaddeditComponent implements OnInit {
         this.articleService.getArticlebyID(this.editArticleID).subscribe({
           next: data => {
             this.iArticles = data;
+            console.log('this.iArticles', this.iArticles[0].subCategoryID);
             this.myForm.controls['publicationID'].setValue(this.iArticles[0].publicationID);
             this.myForm.controls['issueID'].setValue(this.iArticles[0].issueID);
-            this.myForm.controls['categoryID'].setValue(this.iArticles[0].categoryID);
+            this.myForm.patchValue({ categoryID: +this.iArticles[0].categoryID });
+            this.onChangeCategory(this.iArticles[0].categoryID);
             this.myForm.controls['articleTypeID'].setValue(this.iArticles[0].articleTypeID);
-            this.myForm.controls['subCategoryID'].setValue(this.iArticles[0].subCategoryID);
             this.myForm.controls['countryID'].setValue(this.iArticles[0].countryID);
             this.myForm.controls['authorID'].setValue(JSON.parse(localStorage.getItem('currentUser'))[0].userID);
             this.myForm.controls['author'].setValue(JSON.parse(localStorage.getItem('currentUser'))[0].name);
@@ -139,8 +144,8 @@ export class ArticleaddeditComponent implements OnInit {
             this.myForm.get(`tags`).setValue(this.iArticles[0].tags != `null` ? this.iArticles[0].tags : ``);
             this.myForm.get(`articleBody`).setValue(this.iArticles[0].articleBody);
             this.myForm.get(`featuredImageCaption`).setValue(this.iArticles[0].featuredImageCaption != `null` ? this.iArticles[0].featuredImageCaption : ``);
-            this.myForm.get(`publishToTA`).setValue(this.iArticles[0].publishToTA);
-            this.myForm.get(`publishToMAG`).setValue(this.iArticles[0].publishToMAG);
+            this.myForm.get(`showinTA`).setValue(this.iArticles[0].showinTA);
+            this.myForm.get(`showinMAG`).setValue(this.iArticles[0].showinMAG);
 
             if (this.iArticles[0].featuredImageURL != null) {
               this.imageURL = environment.imageURL + this.iArticles[0].featuredImageURL;
@@ -163,8 +168,14 @@ export class ArticleaddeditComponent implements OnInit {
       }, 2000);
 
     }
+    else {
+      setTimeout(() => {
+        this.myForm.controls['publicationID'].setValue(Number(localStorage.getItem('PublicationID')));
+        this.myForm.controls['issueID'].setValue(Number(localStorage.getItem('issueID')));
 
-
+        this.onChangePublication(Number(localStorage.getItem('PublicationID')));
+      }, 500);
+    }
     this.loadArticleExtensions();
   }
   onFileSelect(event) {
@@ -222,15 +233,26 @@ export class ArticleaddeditComponent implements OnInit {
       formData.append('subCategoryName', 'GCI');
       formData.append('issueID', this.myForm.value.issueID);
       formData.append('issue', '01jan');
-      formData.append('publishToTA', this.myForm.value.publishToTA);
-      formData.append('publishToMAG', this.myForm.value.publishToMAG);
+      formData.append('showinTA', this.myForm.value.showinTA);
+      formData.append('showinMAG', this.myForm.value.showinMAG);
       formData.append('refNo', '0');
+      formData.append('createdDate', formatDate(this.today, 'dd/MM/YYYY', 'en-GB'));
 
 
       if (this.editArticleID == 0) {
+        console.log(`Add new Article`);
+        formData.forEach((value, key) => {
+          console.log(key + " " + value)
+        });
         this.articleService.postArticle(formData).subscribe(
           (res) => {
-            console.log(`reson - `, res);
+        //     const loc = this.location.path();
+        //     const newUrl = `/pages/articleaddedit/` + res.articleID;
+        //     this.location.go(newUrl);
+        //  //   this.snackBar.open("Article Successfully Saved!, please wait ...");
+            // setTimeout(() => {
+            //   this.snackBar.dismiss();
+            // }, 2000);
             window.location.href = `../#/pages/articleaddedit/` + res.articleID;
           },
           (err) => console.log(err)
@@ -250,7 +272,7 @@ export class ArticleaddeditComponent implements OnInit {
           (err) => console.log(err)
         );
       }
-      this.snackBar.open("Article Successfully Saved!");
+      this.snackBar.open("Article Successfully Saved!, please wait ...");
 
       setTimeout(() => {
         this.snackBar.dismiss();
@@ -274,7 +296,7 @@ export class ArticleaddeditComponent implements OnInit {
           console.error('There was an error!', error);
         }
       })
-      this.myForm.value.articleTypeID = 13; // IssueArticle
+      this.myForm.value.articleTypeID = 14; // IssueArticle
       this.showSubcategory = false;
       this.showIssue = true;
       this.showArticleType = false;
@@ -291,6 +313,9 @@ export class ArticleaddeditComponent implements OnInit {
       .filter(x => x.publicationID == this.myForm.value.publicationID)
       .filter(x => x.categoryID == selvalue)
       .filter(x => x.articleTypeID == this.myForm.value.articleTypeID);
+    if (this.editArticleID != 0) {
+      this.myForm.patchValue({ subCategoryID: +this.iArticles[0].subCategoryID });
+    }
   }
   ArticleExtension(extensiontype) {
     this.dialog.open(ArticleextensionComponent, {
@@ -307,7 +332,11 @@ export class ArticleaddeditComponent implements OnInit {
       // setTimeout(() => {
       //   this.spinnerservice.hide();
       // }, 2000);
-      window.location.href = `../#/pages/articleaddedit/` + this.editArticleID;
+      // this.loadArticleExtensions();
+      //window.location.href = `../#/pages/articleaddedit/` + this.editArticleID;
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     });
   }
   loadArticleExtensions() {

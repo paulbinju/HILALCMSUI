@@ -137,11 +137,8 @@
 
                         </div>
                       </div>
-                      <mat-label>Article</mat-label>
-                      <ckeditor [editor]="Editor" formControlName="articleBody" data="<p>Hello, world!</p>"></ckeditor>
-
-                      <br><br>
-                      <mat-label>Attach Featured Image</mat-label>
+                 
+                      <mat-label>Attach Featured Image*</mat-label>
 
                       <div class="col-md-3">
                         <input type="file" (change)="onFileSelect($event)" name="featuredImage">
@@ -150,13 +147,6 @@
                       <div class=" col-md-5" *ngIf="imageURL !== '' || imageURL !=null ">
                         <img [src]="imageURL">
                       </div>
-
-
-
-
-
-
-
                       <div class="col-md-5" *ngIf="imageURL && imageURL !== ''">
 
                         <mat-form-field class="example-full-width" appearance="outline">
@@ -166,9 +156,11 @@
                         </mat-form-field>
 
                       </div>
-
+                      <mat-label>Article</mat-label>
+                      <ckeditor [editor]="Editor" formControlName="articleBody" data="<p>Hello, world!</p>"></ckeditor>
                       <br>
                       <br>
+                      <mat-label>Extend Article with Youtube Video / Images / Text</mat-label>
                       <div *ngFor="let iArticleExtension of iArticleExtensions" class="col-md-12">
 
                         <div style="border-top:3px solid #f0f0f0;height:30px;width:60%;margin:10px 0 5px 0">
@@ -196,7 +188,7 @@
 
 
 
-                        <div *ngIf="iArticleExtension.articleExtensionTypeID==16">
+                        <div *ngIf="iArticleExtension.articleExtensionTypeID==17">
                           <iframe width="200" height="180" [src]="sanitizer(iArticleExtension.mediaURL)"
                             title="YouTube video player" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -204,11 +196,11 @@
                         </div>
 
 
-                        <div *ngIf="iArticleExtension.articleExtensionTypeID==15" class="col-md-10">
+                        <div *ngIf="iArticleExtension.articleExtensionTypeID==16" class="col-md-10">
                           <img [src]="imagePath(iArticleExtension.mediaURL)" style="width: 200px;">
                         </div>
 
-                        <div *ngIf="iArticleExtension.articleExtensionTypeID==14" class="col-md-7"
+                        <div *ngIf="iArticleExtension.articleExtensionTypeID==15" class="col-md-7"
                           style="height: 200px;overflow:scroll">
                           <div [innerHTML]="iArticleExtension.textContent"></div>
                         </div>
@@ -222,13 +214,13 @@
                       </button>
                       <div class="buttonrow" *ngIf="editArticleID!=0">
 
-                        <button type="button" mat-fab color="accent" (click)="ArticleExtension(16)">
+                        <button type="button" mat-fab color="accent" (click)="ArticleExtension(17)" title="Youtube Video">
                           <mat-icon>ondemand_video</mat-icon>
                         </button>
-                        <button type="button" mat-fab color="warn" (click)="ArticleExtension(15)">
+                        <button type="button" mat-fab color="warn" (click)="ArticleExtension(16)" title="Image">
                           <mat-icon>image</mat-icon>
                         </button>
-                        <button type="button" mat-fab color="warn" (click)="ArticleExtension(14)">
+                        <button type="button" mat-fab color="warn" (click)="ArticleExtension(15)" title="Text">
                           <mat-icon>text_format</mat-icon>
                         </button>
 
@@ -257,12 +249,12 @@
           <br>
           <div class="row" *ngIf="showIssue==false">
             <div class="col-md-4">
-              Show in Tradearabia Website
-              &nbsp;<mat-slide-toggle color="primary"  formControlName="publishToTA"></mat-slide-toggle>
+              PUBLISH in Tradearabia Website
+              &nbsp;<mat-slide-toggle color="primary"  formControlName="showinTA"></mat-slide-toggle>
             </div>
             <div class="col-md-4">
-              Show in Magazine Website
-              &nbsp;<mat-slide-toggle color="primary"   formControlName="publishToMAG"></mat-slide-toggle>
+              PUBLISH in Magazine Website
+              &nbsp;<mat-slide-toggle color="primary"   formControlName="showinMAG"></mat-slide-toggle>
             </div>
           </div>
 
